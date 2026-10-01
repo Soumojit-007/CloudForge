@@ -1,14 +1,17 @@
-## Core Stack 
-Azure --> Cloud platform where infrastructure runs
-Terraform --> Infrastructure as Code
-Docker --> Containerize the application
-Kubernetes --> Orchestrate Containers
-AKS --> Azure's managed Kubernetes service
-ACR --> Store Docker images
-Github --> Source Code + GitOps repositories
-Azure Devops --> CI/CD + Terraform Automation
-Argo CD --> Gitops continous Delivery
-Azure Key Fault  --> Secure Secrets
-Vnet --> Azure networking
-NSG --> Network security/ firewall rules
-Azure Monitor --> Monitoring and logs
+## 🏗️ Core Stack
+
+| Technology          | Purpose                                            |
+| ------------------- | -------------------------------------------------- |
+| **Azure**           | Cloud platform where the infrastructure runs       |
+| **Terraform**       | Infrastructure as Code (IaC)                       |
+| **Docker**          | Containerizes the application                      |
+| **Kubernetes**      | Orchestrates and manages containers                |
+| **AKS**             | Azure's managed Kubernetes service                 |
+| **ACR**             | Stores Docker/container images                     |
+| **GitHub**          | Source code and GitOps repositories                |
+| **Azure DevOps**    | CI/CD and Terraform automation                     |
+| **Argo CD**         | GitOps continuous delivery                         |
+| **Azure Key Vault** | Securely stores secrets, keys, and certificates    |
+| **VNet**            | Azure virtual networking                           |
+| **NSG**             | Network security and firewall rules                |
+| **Azure Monitor**   | Infrastructure and application monitoring and logs |
