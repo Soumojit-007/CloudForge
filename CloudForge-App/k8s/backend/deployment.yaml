@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudforge-backend
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: cloudforge-backend
+
+  template:
+    metadata:
+      labels:
+        app: cloudforge-backend
+        azure.workload.identity/use: "true"
+
+    spec:
+      serviceAccountName: cloudforge-backend-sa
+
+      containers:
+        - name: backend
+          image: cloudforgedevacr001.azurecr.io/cloudforge-backend:v1
+
+          ports:
+            - containerPort: 5000
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+          volumeMounts:
+            - name: secrets-store
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+
+      volumes:
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: cloudforge-keyvault
+# Tells AKS to run your backend Docker image as a Kubernetes Pod.

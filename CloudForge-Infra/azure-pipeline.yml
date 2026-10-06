@@ -1,0 +1,60 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+
+  - stage: TerraformPlan
+    displayName: Terraform Plan
+    jobs:
+
+      - job: Plan
+        displayName: Terraform Plan
+
+        steps:
+
+          - checkout: self
+
+          - task: TerraformInstaller@1
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: '1.16.2'
+
+          - task: AzureCLI@2
+            displayName: Terraform Init
+            inputs:
+              azureSubscription: 'cloudforge_azure'
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/dev'
+              inlineScript: |
+                terraform init
+
+          - task: AzureCLI@2
+            displayName: Terraform Validate
+            inputs:
+              azureSubscription: 'cloudforge_azure'
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/dev'
+              inlineScript: |
+                terraform validate
+
+          - task: AzureCLI@2
+            displayName: Terraform Plan
+            inputs:
+              azureSubscription: 'cloudforge_azure'
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/dev'
+              inlineScript: |
+                terraform plan -out=tfplan

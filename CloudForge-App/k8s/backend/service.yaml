@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudforge-backend
+spec:
+  selector:
+    app: cloudforge-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
+# Creaes an internal kubernetes network endpoint for the backend
+# ClusterIP means that backend is not directly exposed to the internet 

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudforge-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudforge-frontend
+  template:
+    metadata:
+      labels:
+        app: cloudforge-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: cloudforgedevacr001.azurecr.io/cloudforge-frontend:v1
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "300m"
+              memory: "128Mi"
+
+
+#  Tells AKS to run your frontend container
