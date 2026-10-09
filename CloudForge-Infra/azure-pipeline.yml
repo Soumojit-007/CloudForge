@@ -24,10 +24,15 @@ stages:
 
           - checkout: self
 
-          - task: TerraformInstaller@1
+          - script: |
+              TERRAFORM_VERSION="1.16.2"
+              curl -fsSLo terraform.zip \
+                "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+              unzip -o terraform.zip -d "$HOME/.local/bin"
+              echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+              echo "##vso[task.prependpath]$HOME/.local/bin"
+              terraform version
             displayName: Install Terraform
-            inputs:
-              terraformVersion: '1.16.2'
 
           - task: AzureCLI@2
             displayName: Terraform Init
