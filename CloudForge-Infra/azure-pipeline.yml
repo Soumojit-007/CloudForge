@@ -25,15 +25,18 @@ stages:
           - checkout: self
 
           - script: |
-              TERRAFORM_VERSION="1.16.2"
-              curl -fsSLo terraform.zip \
-                "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-              unzip -o terraform.zip -d "$HOME/.local/bin"
-              echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-              echo "##vso[task.prependpath]$HOME/.local/bin"
-              terraform version
-            displayName: Install Terraform
+              set -e
+              VERSION="1.16.2"
+              INSTALL DIR="$(Agent.TempDirectory)/terraform-bin"
+              mkdir -p "$INSTALL_DIR"
 
+              curl -fsSLo "$(Agent.TempDirectory)/terraform.zip" \
+                "https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip"
+              unzip -o "$(Agent.TempDirectory)/terraform.zip" -d "$INSTALL_DIR"
+              echo "##vso[task.prependpath]$INSTALL_DIR"
+
+              "$INSTALL_DIR/terraform" version
+            displayName: Install Terraform
           - task: AzureCLI@2
             displayName: Terraform Init
             inputs:
