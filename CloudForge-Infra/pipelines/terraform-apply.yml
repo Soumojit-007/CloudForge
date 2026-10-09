@@ -1,4 +1,5 @@
-trigger: none
+trigger: none  # We dont want every change to be updated
+
 
 pool:
   vmImage: ubuntu-latest
