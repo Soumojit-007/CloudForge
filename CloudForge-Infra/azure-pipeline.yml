@@ -12,39 +12,37 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-
   - stage: TerraformPlan
     displayName: Terraform Plan
     jobs:
-
       - job: Plan
         displayName: Terraform Plan
-
         steps:
-
           - checkout: self
 
           - script: |
               set -e
               VERSION="1.16.2"
-              INSTALL DIR="$(Agent.TempDirectory)/terraform-bin"
+              INSTALL_DIR="$(Agent.TempDirectory)/terraform-bin"
               mkdir -p "$INSTALL_DIR"
 
               curl -fsSLo "$(Agent.TempDirectory)/terraform.zip" \
                 "https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip"
+
               unzip -o "$(Agent.TempDirectory)/terraform.zip" -d "$INSTALL_DIR"
               echo "##vso[task.prependpath]$INSTALL_DIR"
-
               "$INSTALL_DIR/terraform" version
             displayName: Install Terraform
+
           - task: AzureCLI@2
             displayName: Terraform Init
             inputs:
               azureSubscription: 'cloudforge_azure'
               scriptType: bash
               scriptLocation: inlineScript
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/dev'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/CloudForge-Infra/environments/dev'
               inlineScript: |
+                export ARM_USE_CLI=true
                 terraform init
 
           - task: AzureCLI@2
@@ -53,8 +51,9 @@ stages:
               azureSubscription: 'cloudforge_azure'
               scriptType: bash
               scriptLocation: inlineScript
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/dev'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/CloudForge-Infra/environments/dev'
               inlineScript: |
+                export ARM_USE_CLI=true
                 terraform validate
 
           - task: AzureCLI@2
@@ -63,6 +62,7 @@ stages:
               azureSubscription: 'cloudforge_azure'
               scriptType: bash
               scriptLocation: inlineScript
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/dev'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/CloudForge-Infra/environments/dev'
               inlineScript: |
+                export ARM_USE_CLI=true
                 terraform plan -out=tfplan
