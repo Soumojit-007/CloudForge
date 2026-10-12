@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudforge-frontend
+  namespace: cloudforge
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloudforge-frontend
+  template:
+    metadata:
+      labels:
+        app: cloudforge-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: cloudforgedevacr001.azurecr.io/cloudforge-frontend:v1
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi

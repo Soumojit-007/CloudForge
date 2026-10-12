@@ -1,0 +1,25 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: cloudforge
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: CloudForge GitOps project for AKS
+
+  sourceRepos:
+    - "https://github.com/Soumojit-007/cloudforge-gitops.git"
+
+  destinations:
+    - namespace: cloudforge
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

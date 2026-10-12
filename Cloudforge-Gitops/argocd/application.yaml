@@ -1,0 +1,21 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudforge-dev
+  namespace: argocd
+spec:
+  project: cloudforge
+  source:
+    repoURL: https://github.com/Soumojit-007/cloudforge-gitops.git
+    targetRevision: master
+    path: environments/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cloudforge
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
