@@ -107,30 +107,27 @@ cloudforge-app/
 
 
 cloudforge-gitops/
-│
 ├── apps/
-│   │
 │   └── cloudforge/
 │       ├── namespace.yaml
-│       ├── deployment.yaml
-│       ├── service.yaml
-│       ├── ingress.yaml
+│       ├── frontend/
+│       │   ├── deployment.yaml
+│       │   └── service.yaml
+│       ├── backend/
+│       │   ├── deployment.yaml
+│       │   ├── service.yaml
+│       │   ├── serviceaccount.yaml
+│       │   └── secretproviderclass.yaml
 │       ├── configmap.yaml
-│       └── secret.yaml
-│
+│       └── ingress.yaml
 ├── argocd/
-│   │
 │   ├── application.yaml
 │   └── project.yaml
-│
 ├── environments/
-│   │
 │   ├── dev/
 │   │   └── kustomization.yaml
-│   │
 │   └── prod/
 │       └── kustomization.yaml
-│
 ├── README.md
 └── .gitignore
 
@@ -207,3 +204,6 @@ ACR
     LoadBalancer
           │
      Public IP
+
+
+     <!-- The workflow to remember: Check the pod -> check the service -> check the external IP -> test-connectivity -> inspect Azure networking if the test fails... -->

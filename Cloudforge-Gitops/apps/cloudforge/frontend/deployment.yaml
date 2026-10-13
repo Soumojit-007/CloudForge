@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: cloudforgedevacr001.azurecr.io/cloudforge-frontend:v1
+          image: cloudforgedevacr001.azurecr.io/cloudforge-frontend:v2
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 80
